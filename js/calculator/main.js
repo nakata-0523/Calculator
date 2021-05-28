@@ -1,3 +1,4 @@
+
 //足し算
 function btn_puls() {
     var input1 = document.getElementById("value1");
