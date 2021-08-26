@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>12-3-1</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        p{
+            text-align: center;
+        }
+        #canvas1 {
+            background-image: url(bg1.png);
+            background-size: 100% 100%;
+        }
+    </style>
+</head>
+<body>
+    <p><canvas id="canvas1" width="320" height="480"></canvas></p>
+
+    <script>
+        var canvas1 = document.getElementById("canvas1");
+        var ctx1 = canvas1.getContext("2d");
+
+        //変数の設定と初期化
+        var target = {x:250, y:100, dir:1};
+        var player = {x:250, y:400};
+        var ball = {x:-10, y:-10};
+        var point = 0;
+
+        //一定時間ごとにプログラムgame1を起動させる
+        setInterval(game1, 50);
+
+        //game1関数
+        function game1() {
+            //画面をクリア
+            ctx1.clearRect(0, 0, 320, 480);
+
+            //描画（ターゲット）
+            ctx1.fillStyle = "black";
+            ctx1.fillRect(target.x-25, target.y-5, 50, 10);
+
+            //描画（得点）
+            ctx1.fillStyle = "black";
+            ctx1.font = "20px sans-serif";
+            ctx1.fillText(point, target.x, target.y-5);
+
+            //描画（プレーヤ）
+            ctx1.fillStyle = "blue";
+            ctx1.fillRect(player.x-25, player.y-5, 50,10);
+
+            //描画（ボール）
+            ctx1.fillStyle = "red";
+            ctx1.beginPath();
+            ctx1.arc(ball.x, ball.y, 5, 0, 2*Math.PI, false);
+            ctx1.closePath();
+            ctx1.fill();
+
+            //移動計算
+            target.x += target.dir;
+            ball.y -= 5;
+
+            //壁衝突計算
+            if (target.x < 25 || 295 < target.x) {target.dir *= 1;}
+
+            //得点計算
+            if ((ball.y === 100) && (Math.abs(target.x - ball.x) < 25)) {
+                point++;
+            }
+        }
+
+        //シュート関数
+        canvas1.addEventListener("mousedown", function() {
+            ball.x = player.x;
+            ball.y = player.y;
+        });
+
+        //プレーヤコントロール
+        canvas1.addEventListener("mousemove", function(e) {
+            var rect = e.target.getBoundingClientRect();
+            player.x = e.clientX-rect.left;
+        });
+    </script>
+</body>
+</html>

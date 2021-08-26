@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        p {
+            text-align: center;
+        }
+        #canvas1 {
+            border: 1px solid gray;
+        }
+        #po1 {
+            color: black;
+            font-size: 30px;
+        }
+        #po2 {
+            color: green;
+            font-size: 30px;
+        }
+        #po3 {
+            color: orange;
+            font-size: 30px;
+        }
+        #po4 {
+            color: blue;
+            font-size: 30px;
+        }
+    </style>
+</head>
+<body>
+    <p><canvas id="canvas1" width="700" height="700"></canvas></p>
+
+    <p id="po1"></p>
+    <p id="po2"></p>
+    <p id="po3"></p>
+    <p id="po4"></p>
+
+    <script>
+        var canvas1 = document.getElementById("canvas1");
+        var ctx1 = canvas1.getContext("2d");
+
+        //変数の設定と初期化
+        var target1 = {x:250, y:100, dir:1};
+        var target2 = {x:250, y:100, dir:2};
+        var target3 = {x:250, y:100, dir:4};
+        var target4 = {x:250, y:100, dir:0.5};
+        var player = {x:250, y:400};
+        var ball = {x:-10, y:-10};
+        var point1 = 0;
+        var point2 = 0;
+        var point3 = 0;
+        var point4 = 0;
+
+        //一定時間毎起動させる
+        setInterval(game1, 1);
+
+        //game1関数
+        function game1() {
+            ctx1.clearRect(0, 0,700, 700);
+
+            //ターゲット1
+            ctx1.fillStyle = "black";
+            ctx1.fillRect(target1.x-20, target1.y-5, 70, 70);
+
+            //ターゲット2
+            ctx1.fillStyle = "green";
+            ctx1.fillRect(target2.x-15, target2.y+100, 50, 50);
+
+            //ターゲット3
+            ctx1.fillStyle = "orange";
+            ctx1.fillRect(target3.x, target3.y-40, 25, 25);
+
+            //ターゲット4
+            ctx1.fillStyle = "blue";
+            ctx1.fillRect(target4.x, target4.y+170, 25, 25);
+
+            //得点
+            ctx1.fillStyle = "black";
+            ctx1.font = "20px sans-serif";
+            ctx1.fillText(point1, target1.x, target1.y-5);
+            ctx1.fillText(point2, target2.x+5, target2.y+100);
+            ctx1.fillText(point3, target3.x+5, target3.y-40);
+            ctx1.fillText(point4, target4.x+5, target4.y+170);
+
+            //プレーヤ
+            ctx1.fillStyle = "blue";
+            ctx1.fillRect(player.x-25, player.y+200, 75, 10);
+
+            //描画（ボール）
+            ctx1.fillStyle = "red";
+            ctx1.beginPath();
+            ctx1.arc(ball.x+10, ball.y+200, 10, 0, 10*Math.PI, false);
+            ctx1.closePath();
+            ctx1.fill();
+
+            //移動計算
+            target1.x += target1.dir;
+            ball.y -= 5;
+
+            target2.x += target2.dir;
+            ball.y -= 5;
+
+            target3.x += target3.dir;
+            ball.y -= 5;
+
+            target4.x += target4.dir;
+            ball.y -= 5;
+
+            //壁衝突計算
+            if (target1.x < 25 || 650 < target1.x) {target1.dir *= -1;}
+
+            if (target2.x < 25 || 650 < target2.x) {target2.dir *= -1;}
+
+            if (target3.x < 25 || 650 < target3.x) {target3.dir *= -1;}
+
+            if (target4.x < 25 || 650 < target4.x) {target4.dir *= -1;}
+
+            //得点
+            //ターゲット1
+            if ((ball.y === 100) && (Math.abs(target1.x - ball.x) < 30)) {
+                point1++;
+                document.getElementById('po1').textContent = point1;
+            }
+            //ターゲット2
+            if ((ball.y === 100) && (Math.abs(target2.x - ball.x) < 30)) {
+                point2++;
+                document.getElementById('po2').textContent = point2;
+            }
+            //ターゲット3
+            if ((ball.y === 100) && (Math.abs(target3.x - ball.x) < 30)) {
+                point3++;
+                document.getElementById('po3').textContent = point3;
+            }
+
+            //ターゲット4
+            if ((ball.y === 100) && (Math.abs(target4.x - ball.x) < 30)) {
+                point4++;
+                document.getElementById('po4').textContent = point4;
+            }
+        }
+
+        //シュート
+        canvas1.addEventListener("mousedown", function() {
+            ball.x = player.x;
+            ball.y = player.y;
+        });
+
+        //playerコントロール
+        canvas1.addEventListener("mousemove", function(e) {
+            var rect = e.target.getBoundingClientRect();
+            player.x = e.clientX-rect.left;
+        });
+    </script>
+</body>
+</html>

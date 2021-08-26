@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        #canvas1 {
+            border: 1px solid gray;
+        }
+        p {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <p><canvas id="canvas1" width="200" height="200"></canvas></p>
+
+    <script>
+        var canvas1 = document.getElementById("canvas1");
+        var ctx1 = canvas1.getContext("2d");
+
+        //変数の定義と初期化
+        var target = {x:100, y:100, dir:1};
+
+        //関数の実行
+        setInterval(game1, 50);
+
+        //関数の定義
+        function game1() {
+            //画面をクリア
+            ctx1.clearRect(0, 0, 300, 200);
+
+            //描画
+            ctx1.fillStyle = "blue";
+            ctx1.fillRect(target.x, target.y, 50, 50);
+
+            //移動計算
+            target.x += target.dir;
+
+            //壁衝突計算
+            if (target.x < 0 || 250 < target.x) {
+                target.dir *= -1;
+            }
+        }
+
+        // //折れ線
+        // ctx1.beginPath();
+        // ctx1.moveTo(110, 10);
+        // ctx1.lineTo(150, 90);
+        // ctx1.lineTo(190, 10);
+        // ctx1.lineWidth=10;
+        // ctx1.strokeStyle="blue";
+        // ctx1.stroke();
+
+        // //三角
+        // ctx1.beginPath();
+        // ctx1.moveTo(50, 10);
+        // ctx1.lineTo(10, 90);
+        // ctx1.lineTo(90, 90);
+        // ctx1.closePath();
+        // ctx1.fillStyle="green";
+        // ctx1.fill();
+
+        // ctx1.lineWidth=5;
+        // ctx1.strokeStyle="yellow";
+        // ctx1.stroke();
+
+
+        // //矩形
+        // ctx1.fillStyle="red";
+        // ctx1.fileRect(10, 10, 80, 80);
+
+        // //消去
+        // ctx1.clearRect(20, 30, 60, 40);
+
+        // //枠の矩形
+        // ctx1.strokeStyle="green";
+        // ctx1.strokeRect(105, 5, 90, 90);
+    </script>
+</body>
+</html>
